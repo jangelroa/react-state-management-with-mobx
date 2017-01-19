@@ -15,4 +15,4 @@ const App = observer(({time}) => {
     return (<h1>Time is Ticking: {time.value.toString()}</h1>);
 });
 
-ReactDom.render(<App time={time}/>, document.querySelector('main'))
+ReactDom.render(<App time={time}/>, document.querySelector('main'));
