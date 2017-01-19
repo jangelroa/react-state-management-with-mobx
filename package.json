@@ -1,0 +1,29 @@
+{
+  "name": "mobx-intro",
+  "version": "1.0.0",
+  "description": "Intro to MobX (tuts+ Course)",
+  "scripts": {
+    "start": "webpack-dev-server"
+  },
+  "keywords": [
+    "mobx",
+    "react"
+  ],
+  "author": "Pavan Podila",
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-plugin-transform-decorators": "^6.13.0",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "html-webpack-plugin": "^2.26.0",
+    "webpack": "^2.2.0",
+    "webpack-dev-server": "^2.2.0"
+  },
+  "dependencies": {
+    "mobx": "^3.0.1",
+    "mobx-react": "^4.1.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}
