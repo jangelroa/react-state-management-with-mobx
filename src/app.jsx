@@ -1,18 +1,36 @@
+import 'tachyons';
+
 import React from 'react';
 import ReactDom from 'react-dom';
-import {observable} from 'mobx';
 import {observer} from 'mobx-react';
+import {Sheet, SheetStore} from './examples/ex2-sheet';
+import {Toolbar, selectedItem} from './examples/ex4-toolbar';
+import {Clock} from './examples/ex1-clock';
+import {EventForm} from './examples/ex3-event';
 
-let time = observable({
-    value: new Date()
+
+const sheet = new SheetStore();
+const App = observer(() => {
+
+    return (
+        <div>
+
+            <Toolbar />
+            {
+                selectedItem.get() === 'ex-1' ? (<Clock />) : null
+            }
+
+            {
+                selectedItem.get() === 'ex-2' ? (<Sheet sheet={sheet}/>) : null
+            }
+
+            {
+                selectedItem.get() === 'ex-3' ? (<EventForm />) : null
+            }
+
+
+        </div>
+    );
 });
 
-setInterval(() => {
-    time.value = new Date();
-}, 1000);
-
-const App = observer(({time}) => {
-    return (<h1>Time is Ticking: {time.value.toString()}</h1>);
-});
-
-ReactDom.render(<App time={time}/>, document.querySelector('main'));
+ReactDom.render(<App />, document.querySelector('main'));
