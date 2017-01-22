@@ -8,13 +8,18 @@ import {Sheet, SheetStore} from './examples/ex2-sheet';
 import {Toolbar, selectedItem} from './examples/ex4-toolbar';
 import {Clock} from './examples/ex1-clock';
 import {EventForm} from './examples/ex3-event';
+import Devtools from 'mobx-devtools';
 
+// import {useStrict} from 'mobx';
+// useStrict(true);
 
 const sheet = new SheetStore();
 const App = observer(() => {
 
     return (
         <div>
+
+            <Devtools />
 
             <Toolbar />
             {

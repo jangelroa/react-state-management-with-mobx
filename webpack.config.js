@@ -15,15 +15,15 @@ module.exports = {
     module: {
         rules: [
             {
-                use: ['babel-loader'],
-                test: /\.jsx?$/,
-                include: __dirname + '/src'
-            },
-            {
                 loader: ExtractTextWebpackPlugin.extract({
                     loader: ['css-loader']
                 }),
                 test: /\.css?$/
+            },
+            {
+                use: ['babel-loader'],
+                test: /\.jsx?$/,
+                include: __dirname + '/src'
             },
             {
                 use: 'file-loader',

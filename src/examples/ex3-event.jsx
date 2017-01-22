@@ -1,15 +1,16 @@
 import React from 'react';
-import {observable, autorun, action, computed, reaction} from 'mobx';
+import {observable, autorun, action, computed, reaction, when, runInAction} from 'mobx';
 import {observer} from 'mobx-react';
 
 class EventStore {
-    @observable startDate = '';
-    @observable endDate = '';
-    @observable name = '';
+    @observable startDate = '2017-01-01';
+    @observable endDate = '2017-02-01';
+    @observable name = 'pavan';
 
     @observable.ref errors = {};
 
     @observable pending = false;
+    @observable submitted = false;
 
     @computed get isValid() {
         return this.errors === null;
@@ -61,18 +62,33 @@ class EventStore {
     }
 
     @action
-    async submit() {
+    submit() {
+        runInAction(() => {
+            this.handleSubmission();
+        });
+
+        when(
+            () => !this.pending,
+            () => {
+                if (this.submitted) {
+                    console.log('Performing some side effect');
+                }
+            });
+    }
+
+    async handleSubmission() {
         this.pending = true;
         this.submitted = false;
 
         try {
             const response = await this.makeServiceCall();
-            this.submitted = true;
+
+            runInAction(() => this.submitted = true);
         } catch (e) {
-            this.submitted = false;
+            runInAction(() => this.submitted = false);
         }
         finally {
-            this.pending = false
+            runInAction(() => this.pending = false);
         }
     }
 
@@ -95,7 +111,9 @@ store.init();
 export class EventForm extends React.Component {
 
     render() {
-        const {errors, name, startDate, endDate, isValid} = store;
+        const {errors, name, startDate, endDate, isValid, pending} = store;
+        const disabled = !isValid || pending;
+
         return (
             <section className="pa3">
                 <div className="mb3">
@@ -129,15 +147,19 @@ export class EventForm extends React.Component {
                 </div>
 
                 <button
-                    className={`pa2 ba br1 b--dark-blue pointer ${isValid ? 'bg-blue white' : 'bg-light-gray black-30'}`}
-                    disabled={!isValid}>Submit
-                </button>
+                    className={`pa2 ba br1 b--dark-blue pointer ${disabled ? 'bg-light-gray black-30' : 'bg-blue white'}`}
+                    onClick={this.onSubmit}
+                    disabled={disabled}>{pending ? 'Submitting...' : 'Submit'}</button>
             </section>
         );
     }
 
     onFieldChange = (field, value) => {
         store.setField(field, value);
+    };
+
+    onSubmit = () => {
+        store.submit();
     };
 }
 
