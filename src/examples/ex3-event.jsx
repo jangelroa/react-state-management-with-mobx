@@ -63,9 +63,7 @@ class EventStore {
 
     @action
     submit() {
-        runInAction(() => {
-            this.handleSubmission();
-        });
+        this.handleSubmission();
 
         when(
             () => !this.pending,
